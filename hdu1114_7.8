@@ -1,0 +1,38 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<cstdlib>
+#include<iomanip>
+#include<string>
+#include<algorithm>
+using namespace std;
+const int MAX=11111;
+int dp[MAX],value[MAX][2];
+int main(){
+	int t,n,m,num;
+	cin>>t;
+	while(t--){
+		cin>>n>>m;
+		int weight=m-n;
+		for(int i=1;i<=weight;++i){
+			dp[i]=999999;
+		}
+		dp[0]=0;
+		cin>>num;
+		for(int i=0;i<num;++i){
+			scanf("%d%d",&value[i][0],&value[i][1]);
+		}
+		for(int i=0;i<num;++i){
+			for(int j=0;j<=weight;++j){//for(int j=value[i][1];j<=weight;++j)ÓÅ»¯. 
+				if(value[i][1]>j){
+					dp[j]=dp[j];
+				}
+				else{
+					dp[j]=min(dp[j],dp[j-value[i][1]]+value[i][0]);
+				}
+			}
+		}
+		if(dp[weight]==999999)cout<<"This is impossible.\n";
+		else cout<<"The minimum amount of money in the piggy-bank is "<<dp[weight]<<".\n";
+	}
+}

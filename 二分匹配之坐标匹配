@@ -1,0 +1,73 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+#include<string>
+#include<queue>
+#include<algorithm>
+#include<map>
+#include<iomanip>
+#define INF 99999999
+using namespace std;
+
+const int MAX=101;
+int marry[MAX][MAX],link[MAX][MAX][2];
+int n,m,top;
+bool mark[MAX][MAX];
+int dir[][2]={0,1,0,-1,1,0,-1,0};
+
+bool find(int x,int y){
+	for(int i=0;i<4;++i){
+		int a=x+dir[i][0];
+		int b=y+dir[i][1];
+		if(a>0 && b>0 && a<=n && b<=m && marry[x][y] != marry[a][b] && !mark[a][b]){
+			mark[a][b]=true;
+			if(!(link[a][b][0]+link[a][b][1]) || find(link[a][b][0],link[a][b][1])){
+				link[a][b][0]=x;
+				link[a][b][1]=y;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool hungarian_algorithm(){
+	for(int i=1;i<=n;++i){
+		for(int j=1;j<=m;++j){
+			if((i&1) == (j&1)){
+				memset(mark,false,sizeof mark);
+				if(!find(i,j))return false;
+			}
+		}
+	}
+	return true;
+}
+
+int main(){
+	while(cin>>n>>m){
+		memset(link,0,sizeof link);
+		for(int i=1;i<=n;++i){
+			for(int j=1;j<=m;++j){
+				cin>>marry[i][j];
+			}
+		}
+		if(!hungarian_algorithm()){cout<<"-1\n";continue;}
+		top=0;
+		for(int i=1;i<=n;++i){
+			for(int j=1;j<=m;++j){
+				if(!((i&1) == (j&1))){
+					marry[i][j]=++top;
+					marry[link[i][j][0]][link[i][j][1]]=top;
+				}
+			}
+		}
+		for(int i=1;i<=n;++i){
+			for(int j=1;j<m;++j){
+				cout<<marry[i][j]<<' ';
+			}
+			cout<<marry[i][m]<<endl;
+		}
+	}
+	return 0;
+}

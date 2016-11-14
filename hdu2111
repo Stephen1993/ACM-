@@ -1,0 +1,40 @@
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+typedef struct
+{
+	int pi;
+	int mi;
+}p;
+p s[101];
+int cmp(const void*a,const void *b)
+{
+	return (*(p*)b).pi-(*(p*)a).pi;
+}
+int main()
+{
+	int n,v;
+	while(cin>>v,v)
+	{
+		cin>>n;
+		int num=0,sum=0;
+		for(int i=0;i<n;++i)
+		cin>>s[i].pi>>s[i].mi;
+		qsort(s,n,sizeof(s[0]),cmp);
+		for(int i=0;i<n;++i)
+		{
+			if(sum+s[i].mi<=v)
+			{
+				num+=s[i].pi*s[i].mi;
+				sum+=s[i].mi;
+			}
+			else
+			{
+				num+=s[i].pi*(v-sum);
+				break;
+			}
+		}
+		cout<<num<<endl;
+	}
+	return 0;
+}

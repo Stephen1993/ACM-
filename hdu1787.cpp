@@ -1,0 +1,35 @@
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+#include<string>
+#include<algorithm>
+#include<queue>
+#include<map>
+#include<iomanip>
+#define INF 999999
+using namespace std;
+const int MAX=100;
+int Euler(int n){
+	int sum=n;
+	for(int i=2;i*i<=n;++i){
+		if(n%i==0){
+			sum-=sum/i;
+			while(n%i==0){
+				n=n/i;
+			}
+		}
+	}
+	if(n!=1){
+		sum-=sum/n;
+	}
+	return sum;
+}
+int main(){
+	int n;
+	while(cin>>n,n){
+		int sum=Euler(n);
+		cout<<n-1-sum<<endl;
+	}
+	return 0;
+}
